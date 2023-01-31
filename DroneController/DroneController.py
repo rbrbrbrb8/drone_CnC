@@ -9,10 +9,12 @@ class DroneController:
   
   def connect(self):
     the_connection = mavutil.mavlink_connection(self.connection_str)
+    success = False
     while(the_connection.target_system == 0):
       print('Checking heartbeat')
       the_connection.wait_heartbeat()
       print('heartbeat from system {system %u component %u}' % (the_connection.target_system,the_connection.target_component))
+      success = True
     self.the_connection = the_connection
 
   def ack(self,keyword):

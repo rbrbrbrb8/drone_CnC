@@ -6,7 +6,7 @@ from pydantic import BaseModel
 # py -m uvicorn app:app --reload
 root = os.path.dirname(os.path.abspath(__file__))
 drone = DroneController('tcp','localhost','5762')
-drone.connect()
+
 app = FastAPI()
 
 class Alt(BaseModel):
@@ -18,6 +18,12 @@ def home():
   with open(os.path.join(root,'frontend','index.html')) as fh:
     data = fh.read()
   return Response(content=data,media_type='text/html')
+
+#connect
+@app.post('/connect')
+def connect():
+  drone.connect()
+  return {'success':True}
 
 #get current altitude
 @app.get('/getAltitude')
