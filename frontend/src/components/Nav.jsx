@@ -5,8 +5,10 @@ import '../css/nav.css'
 
 function Nav() {
   return (
-    <Grid container justifyContent='center'>
-      <Typography variant='h4' className='headline'>Drone Command And Control</Typography>
+    <Grid container justifyContent='center' className='nav-container'>
+      <Grid item>
+        <img src="./static/images/logo.png" className='nav-logo' />
+      </Grid>
     </Grid>
   );
 }

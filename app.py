@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Response
 from fastapi.staticfiles import StaticFiles
 import os
+import random
 
 from DroneController.DroneController import DroneController
 from pydantic import BaseModel
@@ -10,10 +11,12 @@ drone = DroneController('tcp','localhost','5762')
 
 app = FastAPI()
 
-app.mount('/build',StaticFiles(directory='frontend/build'))
+app.mount('/static',StaticFiles(directory='frontend/static'))
 
 class Alt(BaseModel):
   alt:float
+
+
 
 #enter main page V
 @app.get('/')
@@ -31,7 +34,9 @@ def connect():
 #get current altitude
 @app.get('/getAltitude')
 def getAltitude():
-  return drone.get_altitude()
+  # return drone.get_altitude()
+  return random.randint(8,9)
+  
 
 #takeoff
 @app.post('/takeoff')

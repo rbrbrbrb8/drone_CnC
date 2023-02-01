@@ -1,3 +1,14 @@
 .headline{
   text-align: center;
 }
+
+.nav-logo{
+  height: 60px;
+}
+
+.nav-container{
+  border-bottom: 1px solid rgba(54, 9, 9, 0.2);
+  /* margin-left: 8px !important; */
+  padding-right: 20px !important;
+  padding-left: 20px !important;
+}

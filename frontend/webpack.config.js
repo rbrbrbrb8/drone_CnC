@@ -5,7 +5,7 @@ module.exports = {
     index: './src/index.js',
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname,'static','build'),
   },
   module: {
     rules: [
@@ -40,18 +40,18 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /[\\]node_modules[\\]/,
-          name: "vendors",
-          chunks: "all",
-          // maxSize:1500000
-        }
-      }
-    }
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       vendors: {
+  //         test: /[\\]node_modules[\\]/,
+  //         name: "vendors",
+  //         chunks: "all",
+  //         // maxSize:1500000
+  //       }
+  //     }
+  //   }
+  // },
   plugins:[
     // new WebpackBundleAnalyzer()
   ]
