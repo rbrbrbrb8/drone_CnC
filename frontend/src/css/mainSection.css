@@ -1,0 +1,27 @@
+.align-center{
+  text-align: center;
+}
+
+.alt-number{
+  color: rgb(84, 84, 166);
+}
+
+.main-section-container{
+  margin-top: 20px;
+}
+
+.refresh-rate{
+  height: 38px;
+}
+
+.takeoff{
+  background-color: green !important;
+}
+
+.land{
+  background-color: red !important;
+}
+
+.takeoff-land-text{
+  color: white;
+}

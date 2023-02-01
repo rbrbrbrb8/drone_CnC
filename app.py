@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Response
+from fastapi.staticfiles import StaticFiles
 import os
 
 from DroneController.DroneController import DroneController
@@ -9,13 +10,15 @@ drone = DroneController('tcp','localhost','5762')
 
 app = FastAPI()
 
+app.mount('/build',StaticFiles(directory='frontend/build'))
+
 class Alt(BaseModel):
   alt:float
 
 #enter main page V
 @app.get('/')
 def home():
-  with open(os.path.join(root,'frontend','index.html')) as fh:
+  with open(os.path.join(root,'frontend','src','index.html')) as fh:
     data = fh.read()
   return Response(content=data,media_type='text/html')
 

@@ -2,7 +2,7 @@ import math,time
 from pymavlink import mavutil
 
 class mission_item:
-  def __init__(self,i,command,current,x,y,z):
+  def __init__(self,i,current,x,y,z):
     self.seq = i
     self.frame = mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT
     self.command = mavutil.mavlink.MAV_CMD_NAV_WAYPOINT
@@ -10,7 +10,7 @@ class mission_item:
     self.auto = 1
     self.param1 = 0.0
     self.param2 = 2.00
-    self.param3 = 0
+    self.param3 = 0.0 
     self.param4 = math.nan
     self.param5 = x
     self.param6 = y
@@ -40,6 +40,34 @@ def takeoff(the_connection):
 #                                        ,0,0,0,0,0,0,0,newAlt)
 
 #   ack(the_connection,"COMMAND_ACK")
+
+def upload_mission(the_connection,mission_item):
+  the_connection.mav.mission_count_send(the_connection.target_system,the_connection.target_component,1,0)
+  ack(the_connection,'MISSION_REQUEST')
+  
+  the_connection.mav.mission_item_send(the_connection.target_system, the_connection.target_component,
+                                      mission_item.seq,
+                                      mission_item.frame,
+                                      mission_item.command,
+                                      mission_item.current,
+                                      mission_item.auto,
+                                      mission_item.param1,
+                                      mission_item.param2,
+                                      mission_item.param3,
+                                      mission_item.param4,
+                                      mission_item.param5,
+                                      mission_item.param6,
+                                      mission_item.param7,
+                                      mission_item.mission_type
+                                      )
+
+  ack(the_connection,'MISSION_ACK')
+
+
+def start_mission(the_connection):
+  print('Starting Mission')
+  the_connection.mav.command_long_send(the_connection.target_system,the_connection.target_component,
+                                        mavutil.mavlink.MAV_CMD_MISSION_START,0,0,0,0,0,0,0,0)
 
 def set_guided(the_connection):
   print("Changing Mode to Guided")
@@ -96,23 +124,26 @@ if __name__ == "__main__":
     the_connection.wait_heartbeat()
     print('heartbeat from system {system %u component %u}' % (the_connection.target_system,the_connection.target_component))
 
-  set_guided(the_connection)
+  # set_guided(the_connection)
+  mission_waypoint = mission_item(0,0,-35.0,149.0,10)
 
-  arm(the_connection)
+  upload_mission(the_connection,mission_waypoint)
+
+  # arm(the_connection)
 
   takeoff(the_connection)
 
-
+  start_mission(the_connection)
   
-  time.sleep(10)
-  change_mode(the_connection,'LAND')
+  # time.sleep(10)
+  # change_mode(the_connection,'LAND')
 
-  while True:
-    try:
-        print('Current Height: ',get_height(the_connection))
-    except:
-        pass
-    time.sleep(0.5)
+  # while True:
+  #   try:
+  #       print('Current Height: ',get_height(the_connection))
+  #   except:
+  #       pass
+  #   time.sleep(0.5)
   # change_alt(the_connection,50,1)
 
   # change_alt(the_connection,30,10)
