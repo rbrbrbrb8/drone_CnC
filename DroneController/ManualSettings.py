@@ -15,3 +15,9 @@ class Settings:
 
   def bind_connection(self,the_connection):
     self.the_connection = the_connection
+
+  def set_neutral(self):
+    self.throttle = 0
+    self.pitch = 0
+    self.roll = 0
+    self.yaw = 0

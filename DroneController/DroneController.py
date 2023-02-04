@@ -23,6 +23,7 @@ def move(settings):
 class DroneController:
   def __init__(self,protocol,host,port):
     self.connection_str ='{}:{}:{}'.format(protocol,host,port)
+    self.mode='STABILIZE'
   
   def connect(self,settings):
     the_connection = mavutil.mavlink_connection(self.connection_str)
@@ -57,6 +58,7 @@ class DroneController:
 
   def change_mode(self,mode):
     print("Changing Mode to ",mode)
+    self.mode = mode
     mode_id = self.the_connection.mode_mapping()[mode]
     self.the_connection.mav.set_mode_send(self.the_connection.target_system,mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,mode_id)
     return self.ack("COMMAND_ACK")

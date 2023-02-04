@@ -1,25 +1,40 @@
-import React from 'react';
-import Nav from './components/Nav';
-import MainSection from './components/MainSection/MainSection';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import theme from './theme/theme';
-import { ModeProvider } from './context/ModeContext';
-import DroneControl from './components/DroneControl/DroneControl';
-import { RateProvider } from './context/RateContext';
+import React, { useEffect, useState, Fragment,useRef } from 'react';
+import MainScreen from './components/MainScreen';
+import LoadingScreen from './components/LoadingScreen';
+import { Fade } from '@mui/material';
+import axios from 'axios';
 
 function App() {
+  const [connected, setConnected] = useState(false);
+  const [twoSecMark, setTwoSecMark] = useState(false)
+  const appRef = useRef(null);
+  useEffect(() => {
+    console.log('connecting');
+    axios.post('/connect',{}).then(res => {
+      console.log(res.data);
+      setConnected(true);
+    })
+    setTimeout(() => {
+      setTwoSecMark(true);
+    }, 2000)
+  }, [])
+  useEffect(() => {
+    if (appRef.current) {
+      appRef.current.scrollTop = 0;
+    }
+  }, [appRef]);
   return (
-    <ThemeProvider theme={theme}>
-      <div>
-        <Nav />
-        <ModeProvider>
-          <RateProvider>
-            <MainSection />
-            <DroneControl />
-          </RateProvider>
-        </ModeProvider>
-      </div>
-    </ThemeProvider>
+    <div>
+      {(connected && twoSecMark) ?
+        <div>
+          <Fade in={connected && twoSecMark} timeout={500}>
+            <div ref={appRef}>
+              <MainScreen />
+            </div>
+          </Fade>
+        </div>
+        : <LoadingScreen />}
+    </div>
   );
 }
 

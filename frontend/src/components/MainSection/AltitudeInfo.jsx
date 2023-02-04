@@ -8,17 +8,16 @@ import axios from 'axios';
 function AltitudeInfo() {
 
   const [currentAlt,setCurrentAlt] = useState(0);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     axios.get('/getAltitude').then(res=>{
-  //       setCurrentAlt(res.data.result);
-  //     })
-  //   },1000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   }
-  // },[])
+  useEffect(() => {
+    const interval = setInterval(() => {
+      axios.get('/getAltitude').then(res=>{
+        setCurrentAlt(res.data.result);
+      })
+    },1000);
+    return () => {
+      clearInterval(interval);
+    }
+  },[])
 
   return (
     <Card sx={{ minWidth: 275, minHeight: 171 }}>

@@ -4,9 +4,10 @@ import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
 import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import axios from 'axios';
+import { useSetMode } from '../../context/ModeContext';
 
 function TakeoffDialog({ open, setOpen }) {
-
+  const setMode = useSetMode();
   const [alt, setAlt] = useState(0)
 
   const handleClose = () => {
@@ -15,6 +16,7 @@ function TakeoffDialog({ open, setOpen }) {
   const takeoff = () => {
     console.log(alt);
     axios.post('/takeoff', { "alt": alt }).then(res => {
+      setMode('Guided');
       console.log(res.data);
       setOpen(false);
       console.log('yes')

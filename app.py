@@ -57,6 +57,9 @@ def home():
 #connect
 @app.post('/connect')
 def connect():
+  if check_connected():
+    return {'success':True}
+  print('trying to connect')
   res =drone.connect(settings)
   return {'success':res}
 

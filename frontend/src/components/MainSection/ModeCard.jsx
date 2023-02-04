@@ -5,13 +5,23 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import { useModeContext, useSetMode } from '../../context/ModeContext';
+import axios from 'axios';
 
 function ModeCard() {
   const mode = useModeContext();
   const setMode = useSetMode()
+  const modeKeys = {
+    'Manual':'ALT_HOLD',
+    'Guided':'GUIDED'
+  }
 
   const changeMode = (e) => {
-    setMode(e.target.checked ? 'Manual' : 'Guided')
+    const modeName = e.target.checked ? 'Manual' : 'Guided'
+    const modeKey = modeKeys[modeName];
+    axios.post('/changeMode',{'mode':modeKey}).then(res => {
+      console.log(res.data);
+      setMode(modeName)
+    })
   }
 
   return (

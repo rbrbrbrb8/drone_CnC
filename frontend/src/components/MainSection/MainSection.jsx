@@ -8,14 +8,17 @@ import ModeCard from './ModeCard';
 import { CardActionArea } from '@mui/material';
 import axios from 'axios';
 import TakeoffDialog from './TakeoffDialog';
+import { useSetMode } from '../../context/ModeContext';
 
 function MainSection() {
 
+  const setMode = useSetMode()
   const [takeoffOpen,setTakeoffOpen] = useState(false);
 
   const land = () => {
     axios.post('/land',{}).then(res => {
       console.log(res.data);
+      setMode('Guided')
     })
   }
 
