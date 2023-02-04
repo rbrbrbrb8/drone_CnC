@@ -166,7 +166,7 @@ if __name__ == "__main__":
     print('Checking heartbeat')
     the_connection.wait_heartbeat()
     print('heartbeat from system {system %u component %u}' % (the_connection.target_system,the_connection.target_component))
-
+  control = Settings(the_connection)
   set_guided(the_connection)
   # mission_waypoint = mission_item(0,0,-35.0,149.0,10)
 
@@ -187,7 +187,7 @@ if __name__ == "__main__":
   # the_connection.motors_armed_wait()
 
   takeoff(the_connection)
-  control = Settings(the_connection)
+  
 
   time.sleep(10)
   print('trying to move')

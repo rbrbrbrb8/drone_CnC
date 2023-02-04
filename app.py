@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Response , Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
 import os
+import threading,time
 
 from DroneController.DroneController import DroneController
 from pydantic import BaseModel
@@ -13,6 +14,21 @@ app = FastAPI()
 #manual initial settings
 settings = Settings()
 
+def move(control):
+  #initially will hover
+  print('moving...')
+  print('active: ' + str(control.active))
+  while control.active:
+    control.the_connection.mav.manual_control_send(
+    control.the_connection.target_system,
+    control.pitch,
+    control.roll,
+    control.throttle,
+    control.yaw,
+    0,
+    0)
+    time.sleep(0.2)
+
 #static dir
 app.mount('/static',StaticFiles(directory='frontend/static'))
 
@@ -21,6 +37,10 @@ class Alt(BaseModel):
 
 class Mode(BaseModel):
   mode:str  
+
+class Directions(BaseModel):
+  pitch:int
+  roll:int
 
 def check_connected():
   if(not hasattr(drone,'the_connection')):
@@ -69,17 +89,25 @@ def land():
 @app.post('/changeMode')
 def change_mode(mode:Mode):
   res =drone.change_mode(mode.mode)
+   
   if mode.mode == 'ALT_HOLD':
     print('starting manual hover')
-    drone.enter_manual(settings)
+    settings.active = True
+    # drone.enter_manual(settings)
+    drone.thread = threading.Thread(target=move,args=(settings,))
+    drone.thread.start()
+  else:
+    settings.active = False
+    if hasattr(drone,'thread'):
+      drone.thread.join()
   return {'data':res}
 
-#brake
-@app.post('/brake')
-def brake():
-  #change settings.active to false
-  #change drone mode to guided
-  pass
+
+#change direction
+@app.post('/changeDirection')
+def change_direction_manual(directions:Directions):
+  settings.change_direction(directions.pitch,directions.roll)
+  return {'res':{'pitch':settings.pitch,'roll':settings.roll}}
 
 #move?
 
