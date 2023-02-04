@@ -6,7 +6,9 @@ the sitl is activated within an Ubuntu VM, by entering the ardupilot/ArduCopter 
 sudo ../Tools/autotest/sim_vehicle.py --vehicle=ArduCopter --map --console
 
 roadmap for expanding the project:
-- error handling - errors in backend will be caught and sent to the frontend as an alert.
-- health check - manage a service which specifies in receiving an api health check call every X seconds, and if there isn't one return home Immediately
+- health check - measure the connectivity latency between client and drone and provide a health status to the user (so we would know to not use manual mode in large latency)
 - waypoint navigation in guided mode - navigation to waypoints using longitude and latitude
 - smart break - pitch and roll in opposite direction to break faster automatically, helps for sharper movement and manuvering
+- safety - identify connection loss between drone and user and taking automatic actions. example - stopping and switching to guided mode, and maybe returning home after a while
+- testing - unitesting, integration testing and perhaps even real-life testing
+- security - auth, encryption
