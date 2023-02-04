@@ -77,6 +77,8 @@ def getAltitude():
 @app.post('/takeoff')
 def takeoff(alt:Alt):
   print('alt: ' + str(alt.alt))
+  drone.disarm()
+  time.sleep(0.1)
   drone.change_mode('GUIDED')
   drone.arm()
   res = drone.takeoff(alt.alt)

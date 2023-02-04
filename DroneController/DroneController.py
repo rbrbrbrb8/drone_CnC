@@ -44,10 +44,17 @@ class DroneController:
   def arm(self):
     print("Arming...")
     self.the_connection.mav.command_long_send(self.the_connection.target_system,self.the_connection.target_component,mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM
-                                        ,0,1,0,0,0,0,0,0)
+                                        ,0,1,21196,0,0,0,0,0)
 
     return self.ack("COMMAND_ACK")
   
+  def disarm(self):
+    print("Disarming...")
+    self.the_connection.mav.command_long_send(self.the_connection.target_system,self.the_connection.target_component,mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM
+                                        ,0,0,21196,0,0,0,0,0)
+
+    return self.ack("COMMAND_ACK")
+
   def takeoff(self,takeoff_alt):
     print("Taking off...")
 
