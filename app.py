@@ -101,6 +101,9 @@ def change_mode(mode:Mode):
     settings.active = False
     if hasattr(drone,'thread'):
       drone.thread.join()
+  
+  if(mode.mode == 'RTL'):
+    drone.set_rtl_speed()
   return {'data':res}
 
 
@@ -121,4 +124,4 @@ def debug():
   for thread in threading.enumerate():
     print(thread.name)
   
-  return drone.limit_speed()
+  return drone.set_rtl_speed()

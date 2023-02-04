@@ -100,12 +100,12 @@ class DroneController:
   def exit_manual(self):
     self.thread.join()
 
-  def limit_speed(self):
+  def set_rtl_speed(self):
     self.the_connection.mav.param_set_send(
       self.the_connection.target_system,
       self.the_connection.target_component,
       b"WPNAV_SPEED",
-      5,
+      500,
       mavutil.mavlink.MAV_PARAM_TYPE_REAL32
     )
 
