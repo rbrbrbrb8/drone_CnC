@@ -14,7 +14,7 @@ function LoadingScreen() {
     };
   }, []);
   return (
-    <Grid container justifyContent='center' alignItems='center' direction='column' sx={{minHeight:800}} spacing={2}>
+    <Grid container justifyContent='center' alignItems='center' direction='column' sx={{minHeight:700}} spacing={2}>
       <Grid item>
         <img src="./static/images/loading_screen.gif" className='loading_img' ref={loadingGifRef}/>
       </Grid>
