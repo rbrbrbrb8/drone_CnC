@@ -99,3 +99,20 @@ class DroneController:
 
   def exit_manual(self):
     self.thread.join()
+
+  def limit_speed(self):
+    self.the_connection.mav.param_set_send(
+      self.the_connection.target_system,
+      self.the_connection.target_component,
+      b"WPNAV_SPEED",
+      5,
+      mavutil.mavlink.MAV_PARAM_TYPE_REAL32
+    )
+
+    self.the_connection.mav.param_request_read_send(
+    self.the_connection.target_system, self.the_connection.target_component,
+    b"WPNAV_SPEED",
+    -1)
+
+    message = self.the_connection.recv_match(type='PARAM_VALUE', blocking=True).to_dict()
+    return message

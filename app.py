@@ -84,23 +84,19 @@ def takeoff(alt:Alt):
   res = drone.takeoff(alt.alt)
   return {'result':res}
 
-#land
-@app.post('/land')
-def land():
-  res = drone.change_mode('LAND')
-  return {'result':res}
-
 #change mode
 @app.post('/changeMode')
 def change_mode(mode:Mode):
+  print('Changing mode...')
   res =drone.change_mode(mode.mode)
    
   if mode.mode == 'ALT_HOLD':
     print('starting manual hover')
     settings.active = True
     # drone.enter_manual(settings)
-    drone.thread = threading.Thread(target=move,args=(settings,))
+    drone.thread = threading.Thread(target=move,args=(settings,),name='manualMovemen')
     drone.thread.start()
+    # drone.limit_speed()
   else:
     settings.active = False
     if hasattr(drone,'thread'):
@@ -119,3 +115,10 @@ def change_direction_manual(directions:Directions):
 #return home?
 
 #manual control
+
+@app.post('/debug')
+def debug():
+  for thread in threading.enumerate():
+    print(thread.name)
+  
+  return drone.limit_speed()

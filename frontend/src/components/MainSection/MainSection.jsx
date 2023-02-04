@@ -16,7 +16,7 @@ function MainSection() {
   const [takeoffOpen,setTakeoffOpen] = useState(false);
 
   const land = () => {
-    axios.post('/land',{}).then(res => {
+    axios.post('/changeMode',{'mode':'LAND'}).then(res => {
       console.log(res.data);
       setMode('Guided')
     })
